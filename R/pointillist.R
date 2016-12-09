@@ -7,6 +7,11 @@
 #' @return A tidy dataframe describing r, g, b and hex values
 #' @export
 #' @importFrom magrittr %>%
+#'
+#' @examples
+#' img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+#'
+#' png_df <- img_df(img_path)
 img_df <- function(file, type = NULL) {
   if(is.null(type)) {
     ext <- tools::file_ext(file)
@@ -49,6 +54,12 @@ img_df <- function(file, type = NULL) {
 #'
 #' @return A tidy data frame with colour depth adjusted
 #' @export
+#'
+#' @examples
+#' img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+#'
+#' png_df <- img_df(img_path)
+#' png_df_8bit <- colour_depth(png_df, 8)
 colour_depth <- function(img_df, depth) {
   if(!depth %in% c(8, 24)) {
     stop("The depth argument must be either 8 or 24")
@@ -72,12 +83,20 @@ colour_depth <- function(img_df, depth) {
 #' Randomly sample a img df to reduce points
 #'
 #' @param img_df A tidy data frame - output from \code{img_df()}
-#' @param density Numeric, controls how many points are included
+#' @param frac Numeric, between 0 and 1, fraction of total points to be included
 #'
 #' @return A tidy data frame with a reduced number of rows
 #' @export
-sample_df <- function(img_df, density) {
-  n <- ceiling(nrow(img_df) * density)
+#'
+#' @examples
+#' img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+#'
+#' png_df <- img_df(img_path)
+#' nrow(png_df)
+#' png_df_sample <- sample_df(0.3)
+#' nrow(png_df_sample)
+sample_df <- function(img_df, frac) {
+  n <- ceiling(nrow(img_df) * frac)
   img_df <- img_df[sample(nrow(img_df), n, replace = FALSE),]
   return(img_df)
 }
@@ -86,12 +105,19 @@ sample_df <- function(img_df, density) {
 #'
 #' @param img_df A tidy data frame - output from \code{img_df()}
 #' @param depth Numeric, describing colour depth - either 8 or 24 (bit)
-#' @param density Numeric, controls how many points are included
 #' @param point_range Numeric vector defining the min and max point size
 #'
 #' @return a ggplot2 object
 #' @export
-pointillise <- function(img_df, depth = 8, density = 0.1, point_range = c(1, 2)) {
+#'
+#' @examples
+#' img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+#'
+#' png_df <- img_df(img_path)
+#' png_df_sample <- sample_df(png_df, 0.3)
+#' seurat <- pointillise(png_df_sample)
+#' seurat
+pointillise <- function(img_df, depth = 8, point_range = c(1, 2)) {
   if(!all(names(img_df) == c("row", "col", "r", "g", "b", "hex"))) {
     stop("The img dataframe doesn't look right. It should be output from img_df()")
   }
@@ -100,8 +126,6 @@ pointillise <- function(img_df, depth = 8, density = 0.1, point_range = c(1, 2))
   }
 
   img_df <- colour_depth(img_df, depth)
-
-  img_df <- sample_df(img_df, density)
 
   coord_ratio <- max(img_df$row) / max(img_df$col)
 

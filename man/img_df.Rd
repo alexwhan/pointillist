@@ -17,4 +17,9 @@ A tidy dataframe describing r, g, b and hex values
 \description{
 Make a data frame of img data
 }
+\examples{
+img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+
+png_df <- img_df(img_path)
+}
 

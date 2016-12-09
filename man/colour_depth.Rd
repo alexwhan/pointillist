@@ -17,4 +17,10 @@ A tidy data frame with colour depth adjusted
 \description{
 Set colour depth to either 8 or 24 bit
 }
+\examples{
+img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+
+png_df <- img_df(img_path)
+png_df_8bit <- colour_depth(png_df, 8)
+}
 
