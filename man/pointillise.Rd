@@ -4,7 +4,7 @@
 \alias{pointillise}
 \title{Make a pointillist ggplot2 object}
 \usage{
-pointillise(jpg_df, depth = 8, density = 0.1)
+pointillise(jpg_df, depth = 8, density = 0.1, point_range = c(1, 2))
 }
 \arguments{
 \item{jpg_df}{A tidy data frame - output from \code{jpg_df()}}
@@ -12,6 +12,8 @@ pointillise(jpg_df, depth = 8, density = 0.1)
 \item{depth}{Numeric, describing colour depth - either 8 or 24 (bit)}
 
 \item{density}{Numeric, controls how many points are included}
+
+\item{point_range}{Numeric vector defining the min and max point size}
 }
 \value{
 a ggplot2 object
