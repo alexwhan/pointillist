@@ -16,7 +16,7 @@ img_df <- function(file, type = NULL) {
       if(ext %in% c("png", "PNG")) type <- "png"
   }
   if(type == "jpg") img <- jpeg::readJPEG(file)
-  if(type == "png") ing <- png::readPNG(file)
+  if(type == "png") img <- png::readPNG(file)
 
   img_list <- vector(mode = "list", length = 3)
 
@@ -24,9 +24,9 @@ img_df <- function(file, type = NULL) {
 
   for(i in 1:3) {
     dims <- dim(img[,,i])
-    img_df <- img[,,i] %>%
-      as.data.frame() %>%
-      dplyr::mutate_("row" = 1:dims[1]) %>%
+    img_df <- as.data.frame(img[,,i])
+    img_df$row <- 1:dims[1]
+    img_df <- img_df %>%
       tidyr::gather_("col", "value", paste0("V", 1:dims[2]))
     img_df$col <- as.numeric(sub("V", "", img_df$col))
     names(img_df)[3] <- vals[i]
