@@ -30,7 +30,7 @@ jpg_df <- function(file) {
   return(jpg_full)
 }
 
-#' Make a pointillist ggplot object
+#' Make a pointillist ggplot2 object
 #'
 #' @param jpg_df A tidy data frame - output from \code{\link{jpg_df()}}
 #' @param depth Numeric, describing colour depth - either 8 or 24 (bit)
@@ -38,11 +38,22 @@ jpg_df <- function(file) {
 #'
 #' @return a ggplot2 object
 #' @export
-#'
-# pointillise <- function(jpg_df, depth = 8, density = 1) {
-#   if(!names(jpg_df) == )
-#   p_out <- ggplot(jpg_df, aes(col, row)) + geom_point(colour = jpg_sample$hex) +
-#     guides(colour = FALSE) +
-#     scale_y_reverse()
-#
-# }
+pointillise <- function(jpg_df, depth = 8, density = 1) {
+  if(!all(names(jpg_df) == c("row", "col", "r", "g", "b", "hex"))) {
+    stop("The jpg dataframe doesn't look right. It should be output from jpg_df()")
+  }
+  if(max(c(jpg_df$r, jpg_df$g, jpg_df$b)) > 1) {
+    stop("The colour range in the jpg dataframe is too big. The dataframe should be output from jpg_df()")
+  }
+
+  coord_ratio <- max(jpg_df$row) / max(jpg_df$col)
+
+  p_out <- ggplot2::ggplot(jpg_df, ggplot2::aes_string("col", "row")) +
+    ggplot2::geom_point(colour = jpg_df$hex) +
+    ggplot2::guides(colour = FALSE) +
+    ggplot2::scale_y_reverse(expand = c(0, 0)) +
+    ggplot2::scale_x_continuous(expand = c(0, 0)) +
+    ggplot2::coord_fixed(ratio = coord_ratio)
+
+  return(p_out)
+}
