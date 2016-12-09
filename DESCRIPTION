@@ -1,0 +1,19 @@
+Package: pointillist
+Type: Package
+Title: Produces pointless pointillist images in ggplot2
+Version: 0.1.0
+Author: person("Alex", "Whan", , "alexwhan@gmail.com", c("aut", "cre"))
+Maintainer: Alex Whan <alexwhan@gmail.com>
+Description: This package performs an entirely unnecessary function.
+License: GPL-3 | file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    jpeg,
+    ggplot2,
+    tidyr,
+    dplyr,
+    purrr
+URL: https://github.com/alexwhan/pointillist
+BugReports: https://github.com/alexwhan/pointillist/issues
+RoxygenNote: 5.0.1
