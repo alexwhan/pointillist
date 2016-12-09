@@ -4,10 +4,10 @@
 \alias{colour_depth}
 \title{Set colour depth to either 8 or 24 bit}
 \usage{
-colour_depth(jpg_df, depth)
+colour_depth(img_df, depth)
 }
 \arguments{
-\item{jpg_df}{A tidy data frame - output from \code{jpg_df()}}
+\item{img_df}{A tidy data frame - output from \code{img_df()}}
 
 \item{depth}{Numeric, describing colour depth - either 8 or 24 (bit)}
 }

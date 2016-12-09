@@ -2,12 +2,12 @@
 % Please edit documentation in R/pointillist.R
 \name{sample_df}
 \alias{sample_df}
-\title{Randomly sample a jpg df to reduce points}
+\title{Randomly sample a img df to reduce points}
 \usage{
-sample_df(jpg_df, density)
+sample_df(img_df, density)
 }
 \arguments{
-\item{jpg_df}{A tidy data frame - output from \code{jpg_df()}}
+\item{img_df}{A tidy data frame - output from \code{img_df()}}
 
 \item{density}{Numeric, controls how many points are included}
 }
@@ -15,6 +15,6 @@ sample_df(jpg_df, density)
 A tidy data frame with a reduced number of rows
 }
 \description{
-Randomly sample a jpg df to reduce points
+Randomly sample a img df to reduce points
 }
 
