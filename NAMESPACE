@@ -3,5 +3,6 @@
 export(colour_depth)
 export(img_df)
 export(pointillise)
+export(pointillise_gif)
 export(sample_df)
 importFrom(magrittr,"%>%")

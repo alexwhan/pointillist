@@ -4,12 +4,10 @@
 \alias{pointillise}
 \title{Make a pointillist ggplot2 object}
 \usage{
-pointillise(img_df, depth = 8, point_range = c(1, 2))
+pointillise(img_df, point_range = c(1, 2))
 }
 \arguments{
 \item{img_df}{A tidy data frame - output from \code{img_df()}}
-
-\item{depth}{Numeric, describing colour depth - either 8 or 24 (bit)}
 
 \item{point_range}{Numeric vector defining the min and max point size}
 }
@@ -23,6 +21,7 @@ Make a pointillist ggplot2 object
 img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
 
 png_df <- img_df(img_path)
+png_df <- colour_depth(png_df, 8)
 png_df_sample <- sample_df(png_df, 0.3)
 seurat <- pointillise(png_df_sample)
 seurat

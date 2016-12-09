@@ -93,7 +93,7 @@ colour_depth <- function(img_df, depth) {
 #'
 #' png_df <- img_df(img_path)
 #' nrow(png_df)
-#' png_df_sample <- sample_df(0.3)
+#' png_df_sample <- sample_df(png_df, 0.3)
 #' nrow(png_df_sample)
 sample_df <- function(img_df, frac) {
   n <- ceiling(nrow(img_df) * frac)
@@ -104,7 +104,6 @@ sample_df <- function(img_df, frac) {
 #' Make a pointillist ggplot2 object
 #'
 #' @param img_df A tidy data frame - output from \code{img_df()}
-#' @param depth Numeric, describing colour depth - either 8 or 24 (bit)
 #' @param point_range Numeric vector defining the min and max point size
 #'
 #' @return a ggplot2 object
@@ -182,7 +181,7 @@ pointillise_gif <- function(img_df, output_file, nframes, interval) {
         ggplot2::geom_point(colour = sample_df_all$hex[sample_df_all$frame == i]) +
         ggplot2::scale_y_reverse() +
         ggplot2::coord_fixed(ratio = coord_ratio)
-      plot(p)
+      graphics::plot(p)
     },
     interval = interval,
     movie.name = output_file,

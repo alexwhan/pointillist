@@ -22,7 +22,7 @@ img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
 
 png_df <- img_df(img_path)
 nrow(png_df)
-png_df_sample <- sample_df(0.3)
+png_df_sample <- sample_df(png_df, 0.3)
 nrow(png_df_sample)
 }
 
