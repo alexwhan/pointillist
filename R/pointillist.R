@@ -114,18 +114,17 @@ sample_df <- function(img_df, frac) {
 #' img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
 #'
 #' png_df <- img_df(img_path)
+#' png_df <- colour_depth(png_df, 8)
 #' png_df_sample <- sample_df(png_df, 0.3)
 #' seurat <- pointillise(png_df_sample)
 #' seurat
-pointillise <- function(img_df, depth = 8, point_range = c(1, 2)) {
+pointillise <- function(img_df, point_range = c(1, 2)) {
   if(!all(names(img_df) == c("row", "col", "r", "g", "b", "hex"))) {
     stop("The img dataframe doesn't look right. It should be output from img_df()")
   }
   if(max(c(img_df$r, img_df$g, img_df$b)) > 1) {
     stop("The colour range in the img dataframe is too big. The dataframe should be output from img_df()")
   }
-
-  img_df <- colour_depth(img_df, depth)
 
   coord_ratio <- max(img_df$row) / max(img_df$col)
 
@@ -143,4 +142,52 @@ pointillise <- function(img_df, depth = 8, point_range = c(1, 2)) {
     ggplot2::coord_fixed(ratio = coord_ratio)
 
   return(p_out)
+}
+
+#' Animate ggplot pointillism
+#'
+#' @param img_df A tidy data frame - output from \code{img_df()}
+#' @param output_file the file name of the gif
+#' @param nframes Integer - the number of frames in the animation
+#' @param interval Numeric - the interval between frames in seconds
+#'
+#' @return An animated gif file
+#' @export
+#' @importFrom magrittr %>%
+#'
+#' @examples
+#' ## ImageMagick must be installed on your system
+#' img_path <- system.file("extdata/images", "seurat.png", package = "pointillist")
+#'
+#' png_df <- img_df(img_path)
+#' png_df <- colour_depth(png_df, 8)
+#' png_df_sample <- sample_df(png_df, 0.3)
+#' pointillist_gif(png_df_sample, "seurat.gif", 5, 0.2)
+pointillist_gif <- function(img_df, output_file, nframes, interval) {
+  coord_ratio <- max(img_df$row) / max(img_df$col)
+
+  sample_seq <- ceiling(seq(from = 1, to = nrow(img_df), length.out = nframes))
+
+  sample_df_list <- sample_seq %>%
+    purrr::map(~png_df_sample[1:.x,])
+
+  sample_df_all <- sample_df_list %>%
+    dplyr::bind_rows(.id = "frame")
+  sample_df_all$frame <- as.numeric(sample_df_all$frame)
+
+  saveGIF(
+    for(i in unique(sample_df_all$frame)) {
+      p <- ggplot2::ggplot(sample_df_all[sample_df_all$frame == i,],
+                           ggplot2::aes_string("col", "row")) +
+        ggplot2::geom_point(colour = sample_df_all$hex[sample_df_all$frame == i]) +
+        ggplot2::scale_y_reverse() +
+        ggplot2::coord_fixed(ratio = coord_ratio)
+      plot(p)
+    },
+    interval = interval,
+    movie.name = output_file,
+    ani.width = max(sample_df_all$col) * 1.2,
+    ani.height = max(sample_df_all$row) * 1.2
+  )
+
 }

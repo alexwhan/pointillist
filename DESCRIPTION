@@ -11,11 +11,15 @@ LazyData: true
 Imports:
     jpeg,
     png,
+    animation,
     ggplot2,
     magrittr,
     tidyr,
     dplyr,
     purrr
+SystemRequirements: ImageMagick (http://imagemagick.org)
+Depends: 
+    R (>= 3.0.0)
 URL: https://github.com/alexwhan/pointillist
 BugReports: https://github.com/alexwhan/pointillist/issues
 RoxygenNote: 5.0.1
