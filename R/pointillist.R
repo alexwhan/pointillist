@@ -162,8 +162,8 @@ pointillise <- function(img_df, point_range = c(1, 2)) {
 #' png_df <- img_df(img_path)
 #' png_df <- colour_depth(png_df, 8)
 #' png_df_sample <- sample_df(png_df, 0.3)
-#' pointillist_gif(png_df_sample, "seurat.gif", 5, 0.2)
-pointillist_gif <- function(img_df, output_file, nframes, interval) {
+#' pointillise_gif(png_df_sample, "seurat.gif", 5, 0.2)
+pointillise_gif <- function(img_df, output_file, nframes, interval) {
   coord_ratio <- max(img_df$row) / max(img_df$col)
 
   sample_seq <- ceiling(seq(from = 1, to = nrow(img_df), length.out = nframes))
@@ -175,7 +175,7 @@ pointillist_gif <- function(img_df, output_file, nframes, interval) {
     dplyr::bind_rows(.id = "frame")
   sample_df_all$frame <- as.numeric(sample_df_all$frame)
 
-  saveGIF(
+  animation::saveGIF(
     for(i in unique(sample_df_all$frame)) {
       p <- ggplot2::ggplot(sample_df_all[sample_df_all$frame == i,],
                            ggplot2::aes_string("col", "row")) +
