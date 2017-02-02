@@ -161,7 +161,9 @@ pointillise <- function(img_df, point_range = c(1, 2)) {
 #' png_df <- img_df(img_path)
 #' png_df <- colour_depth(png_df, 8)
 #' png_df_sample <- sample_df(png_df, 0.3)
+#' \dontrun{
 #' pointillise_gif(png_df_sample, "seurat.gif", 5, 0.2)
+#' }
 pointillise_gif <- function(img_df, output_file, nframes, interval) {
   coord_ratio <- max(img_df$row) / max(img_df$col)
 
@@ -179,8 +181,10 @@ pointillise_gif <- function(img_df, output_file, nframes, interval) {
       p <- ggplot2::ggplot(sample_df_all[sample_df_all$frame == i,],
                            ggplot2::aes_string("col", "row")) +
         ggplot2::geom_point(colour = sample_df_all$hex[sample_df_all$frame == i]) +
-        ggplot2::scale_y_reverse() +
-        ggplot2::coord_fixed(ratio = coord_ratio)
+        ggplot2::scale_y_reverse(limits = c(max(img_df$row), 0)) +
+        ggplot2::coord_fixed(ratio = coord_ratio) +
+        ggplot2::xlim(0, max(img_df$col))
+
       graphics::plot(p)
     },
     interval = interval,
